@@ -218,6 +218,7 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
         rightSpeed = 70 + output
 
         controlMotor(leftSpeed,rightSpeed)
+        print(leftSpeed,rightSpeed)
     
     #### CONTROL PID ####
 
