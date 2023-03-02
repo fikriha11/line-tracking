@@ -165,6 +165,17 @@ def controlManual():
         forward(80)   
 
 def controlMotor(lSpeed,rSpeed):
+
+    if lSpeed < 0:
+        lSpeed = 0
+    elif lSpeed > 100:
+        lSpeed = 100    
+
+    elif rSpeed < 0:
+        rSpeed = 0
+    elif rSpeed > 100:
+        rSpeed = 100    
+
     pwmL.ChangeDutyCycle(lSpeed )
     pwmR.ChangeDutyCycle(rSpeed)
     GPIO.output(Rright,GPIO.HIGH)
@@ -209,10 +220,7 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
     if millis() - lastime >= 100:
         output = pidCompute(318,ex)
         lastime = millis()
-        
-        if output > 20:
-            output = 20
-
+    
         leftSpeed = 70 - output
         rightSpeed = 70 + output
 
