@@ -5,7 +5,6 @@ import numpy as np
 import time
 import imutils
 import RPi.GPIO as GPIO  
-from pid import PID
 
 
 
