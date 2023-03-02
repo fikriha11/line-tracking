@@ -106,7 +106,6 @@ time.sleep(0.1)
 
 # Create a window to display the video stream
 cv2.namedWindow("Video Stream", cv2.WINDOW_NORMAL)
-cv2.namedWindow("control", cv2.WINDOW_NORMAL)
 
 
 # Menentukan range warna yang akan dideteksi
@@ -123,8 +122,8 @@ upper_red = np.array([10, 255, 255])
 
 ####################### INITIAL PID #######################
 
-kp = 0.002
-kd = 0.02
+kp = 0.2
+kd = 0.2
 lastime = 0
 lasterror = 0
 output = 0
