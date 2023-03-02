@@ -143,8 +143,13 @@ def pidCompute(setPoint, actual):
 
     lasterror = error
     
-    return pid
+    if(pid > 20):
+        pid = 20
 
+    if(pid < 0): 
+        pid = 0
+
+    return pid    
         
 ####################### INITIAL PID #######################
 
@@ -165,17 +170,6 @@ def controlManual():
         forward(80)   
 
 def controlMotor(lSpeed,rSpeed):
-
-    if lSpeed < 0:
-        lSpeed = 0
-    elif lSpeed > 100:
-        lSpeed = 100    
-
-    elif rSpeed < 0:
-        rSpeed = 0
-    elif rSpeed > 100:
-        rSpeed = 100    
-
     pwmL.ChangeDutyCycle(lSpeed )
     pwmR.ChangeDutyCycle(rSpeed)
     GPIO.output(Rright,GPIO.HIGH)
