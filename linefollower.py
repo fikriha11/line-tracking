@@ -171,7 +171,6 @@ def controlMotor(lSpeed,rSpeed):
         GPIO.output(Lright,GPIO.LOW)
         GPIO.output(Rleft,GPIO.LOW)
         GPIO.output(Lleft,GPIO.HIGH)
-
     except:
         print('error')
 
@@ -218,7 +217,7 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
         leftSpeed = 70 - output
         rightSpeed = 70 + output
 
-        # controlMotor(leftSpeed,rightSpeed)
+        controlMotor(leftSpeed,rightSpeed)
         print(leftSpeed,rightSpeed)
     
     #### CONTROL PID ####
