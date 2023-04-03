@@ -6,6 +6,9 @@ import time
 import imutils
 import RPi.GPIO as GPIO  
 
+pwm = 55
+kp = 0.2
+kd = 0.02
 
 
 ####################### INITIAL MOTOR #######################
@@ -44,7 +47,7 @@ pwmL.start(70)
 pwmR=GPIO.PWM(enR,1000)
 pwmR.start(70)
 
-pwm = 70
+
 
 def forward(speed): 
     pwmL.ChangeDutyCycle(speed)
@@ -106,6 +109,7 @@ time.sleep(0.1)
 
 # Create a window to display the video stream
 cv2.namedWindow("Video Stream", cv2.WINDOW_NORMAL)
+cv2.setWindowProperty("Video Stream",cv2.WND_PROP_FULLSCREEN,cv2.WINDOW_FULLSCREEN)
 
 
 # Menentukan range warna yang akan dideteksi
@@ -122,8 +126,7 @@ upper_red = np.array([10, 255, 255])
 
 ####################### INITIAL PID #######################
 
-kp = 0.2
-kd = 0.2
+
 lastime = 0
 lasterror = 0
 output = 0
@@ -165,12 +168,26 @@ def controlManual():
 
 def controlMotor(lSpeed,rSpeed):
     try:
+        
+        if (lSpeed < pwm):
+            lSpeed = pwm
+
+        if lSpeed > 100:
+            lSpeed = 100
+
+        if (rSpeed < pwm):
+            rSpeed = pwm
+
+        if rSpeed > 100:
+            rSpeed = 100
+
         pwmL.ChangeDutyCycle(lSpeed )
         pwmR.ChangeDutyCycle(rSpeed)
         GPIO.output(Rright,GPIO.HIGH)
         GPIO.output(Lright,GPIO.LOW)
         GPIO.output(Rleft,GPIO.LOW)
         GPIO.output(Lleft,GPIO.HIGH)
+        print(lSpeed,rSpeed)
     except:
         print('error')
 
@@ -179,7 +196,8 @@ def controlMotor(lSpeed,rSpeed):
 ####################### INITIAL CONTROL #######################
 
 
-
+# rightSpeed = pwm
+# leftSpeed  = pwm
 
 # Capture frames from the camera
 for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=True):
@@ -213,12 +231,12 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
     if millis() - lastime >= 100:
         output = pidCompute(318,ex)
         lastime = millis()
-    
-        leftSpeed = 70 - output
-        rightSpeed = 70 + output
+
+        leftSpeed = pwm - output
+        rightSpeed = pwm + output
 
         controlMotor(leftSpeed,rightSpeed)
-        print(leftSpeed,rightSpeed)
+        
     
     #### CONTROL PID ####
 
